@@ -1,4 +1,4 @@
-﻿namespace Backoffice.Server.Controllers.Administrators.Models;
+﻿namespace Backoffice.Server.Controllers.Models;
 
 public class AuthAdminInputModel
 {

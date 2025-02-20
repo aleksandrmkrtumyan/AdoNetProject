@@ -1,9 +1,9 @@
 ﻿using Backoffice.Application.Commands.Administrators;
 using Backoffice.Application.Commands.Administrators.Models;
-using Backoffice.Server.Controllers.Administrators.Models;
+using Backoffice.Server.Controllers.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backoffice.Server.Controllers.Administrators;
+namespace Backoffice.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -15,10 +15,8 @@ public class AuthController : ControllerBase
     private readonly string? connectionString;
 
     #endregion Fields
-    
-    #region Constructor
 
-    public AuthController(
+    public AuthController( 
         AuthenticateAdministratorCommand authenticateAdministratorCommand,
         IConfiguration configuration
         )
@@ -27,14 +25,10 @@ public class AuthController : ControllerBase
         this.connectionString = configuration.GetConnectionString("DefaultConnection");
     }
     
-    #endregion Constuctor
-    
-    #region Method
-
-    [HttpGet("/test")]
-    public async Task<IActionResult> Test()
+    [HttpGet]
+    public IActionResult Get()
     {
-        return Ok();
+        return Ok("Hello World!");
     }
     
     [HttpPost("authenticate")]
@@ -55,6 +49,4 @@ public class AuthController : ControllerBase
         
         return Ok(new { authenticatedAdmin });
     }
-    
-    #endregion Method
 }

@@ -1,12 +1,13 @@
 using Application.SqlQueries.Administrators;
 using Application.SqlQueries.Database;
+using Backoffice.Application.Commands.Administrators;
+using Backoffice.SqlQueries.Administrators;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddRouting();
-
-
+builder.Services.AddScoped<GetAdminQuery>();
+builder.Services.AddScoped<AuthenticateAdministratorCommand>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 var app = builder.Build();
@@ -19,6 +20,5 @@ var ensureAdminCreated = new EnsureAdminCreated(connectionString);
 await ensureAdminCreated.Execute();
 
 
-app.UseRouting();
 app.MapControllers();
 app.Run();

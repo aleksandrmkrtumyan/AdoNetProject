@@ -22,7 +22,7 @@ public class GetAdminQuery
                              And PasswordHash = @HashedPassword"; 
                 var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Username", inputModel.Username);
-                command.Parameters.AddWithValue("@PasswordHash", hashedPassword);
+                command.Parameters.AddWithValue("@HashedPassword", hashedPassword);
                 
                 var reader = await command.ExecuteReaderAsync();
                 if (await reader.ReadAsync())
