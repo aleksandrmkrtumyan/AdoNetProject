@@ -34,7 +34,9 @@ BEGIN
     (
         Id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
         FileName NVARCHAR(255),
-        ClientId UNIQUEIDENTIFIER
+        ClientId UNIQUEIDENTIFIER,
+        CONSTRAINT FK_FileDb_Client FOREIGN KEY (ClientId) REFERENCES Client(Id)
+        ON DELETE NO ACTION
     );
 END";
                 var command = new SqlCommand(createFileDbQuery, connection);

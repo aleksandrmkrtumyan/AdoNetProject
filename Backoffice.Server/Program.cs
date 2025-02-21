@@ -1,12 +1,20 @@
 using Application.SqlQueries.Administrators;
+using Application.SqlQueries.Clients;
 using Application.SqlQueries.Database;
 using Backoffice.Application.Commands.Administrators;
+using Backoffice.Application.Commands.Clients;
+using Backoffice.Application.Queries.Clients;
 using Backoffice.SqlQueries.Administrators;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<GetAdminQuery>();
 builder.Services.AddScoped<AuthenticateAdministratorCommand>();
+builder.Services.AddScoped<GetClientsQuery>();
+builder.Services.AddScoped<GetClientsFromDatabaseQuery>();
+builder.Services.AddScoped<CreateClientCommand>();
+builder.Services.AddScoped<CreateClientQuery>();
+
 
 builder.Services.AddControllers();
 

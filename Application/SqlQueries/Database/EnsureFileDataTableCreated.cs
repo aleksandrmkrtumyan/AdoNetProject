@@ -33,9 +33,10 @@ BEGIN
     CREATE TABLE FileData
     (
         Id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
-        FileId UNIQUEIDENTIFIER,  -- Внешний ключ, ссылающийся на таблицу FileDb
-        FileContent VARBINARY(MAX),  -- Поле для хранения данных файла
+        FileId UNIQUEIDENTIFIER,  
+        FileContent VARBINARY(MAX),
         CONSTRAINT FK_FileData_FileDb FOREIGN KEY (FileId) REFERENCES FileDb(Id)
+        ON DELETE NO ACTION
     );
 END";
                 var command = new SqlCommand(query, connection);

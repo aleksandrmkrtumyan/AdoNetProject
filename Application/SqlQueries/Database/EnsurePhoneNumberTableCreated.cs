@@ -37,6 +37,7 @@ BEGIN
         Number NVARCHAR(50),
         ClientId UNIQUEIDENTIFIER,
         CONSTRAINT FK_PhoneNumber_Client FOREIGN KEY (ClientId) REFERENCES Client(Id)
+        ON DELETE NO ACTION
     );
 END";
                 var createPhoneNumberTableCommand = new SqlCommand(cratePhoneNumberTableQuery, connection);
