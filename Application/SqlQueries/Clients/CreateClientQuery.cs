@@ -1,5 +1,5 @@
-﻿using Application.SqlQueries.Clients.Models;
-using Microsoft.Data.SqlClient;
+﻿using System.Data.SqlClient;
+using Application.SqlQueries.Clients.Models;
 
 namespace Application.SqlQueries.Clients;
 

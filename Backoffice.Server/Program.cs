@@ -14,12 +14,14 @@ builder.Services.AddScoped<GetClientsQuery>();
 builder.Services.AddScoped<GetClientsFromDatabaseQuery>();
 builder.Services.AddScoped<CreateClientCommand>();
 builder.Services.AddScoped<CreateClientQuery>();
+builder.Services.AddScoped<CreateClientCommand>();
+builder.Services.AddScoped<UpdateClientCommand>();
+builder.Services.AddScoped<UpdateClientQuery>();
 
 
 builder.Services.AddControllers();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 var app = builder.Build();
 
 var ensureDatabaseCreated = new EnsureDatabaseCreated(connectionString);

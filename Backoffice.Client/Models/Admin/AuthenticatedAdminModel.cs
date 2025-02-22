@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Backoffice.Client;
+namespace Backoffice.Client.Models.Admin;
 
 public class AuthenticatedAdminModel
 {
