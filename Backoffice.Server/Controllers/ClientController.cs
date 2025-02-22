@@ -17,6 +17,7 @@ public class ClientController : ControllerBase
     private readonly GetClientsQuery getClientsQuery;
     private readonly CreateClientCommand createClientCommand;
     private readonly UpdateClientCommand updateClientCommand;
+    private readonly GetClientByNameQuery getClientByNameQuery;
     private readonly string? connectionString;
 
     #endregion Fields
@@ -27,11 +28,13 @@ public class ClientController : ControllerBase
         GetClientsQuery getClientsQuery,
         CreateClientCommand createClientCommand,
         UpdateClientCommand updateClientCommand,
+        GetClientByNameQuery getClientByNameQuery,
         IConfiguration configuration)
     {
         this.getClientsQuery = getClientsQuery;
         this.createClientCommand = createClientCommand;
         this.updateClientCommand = updateClientCommand;
+        this.getClientByNameQuery = getClientByNameQuery;
         connectionString = configuration.GetConnectionString("DefaultConnection");
     }
     
@@ -52,7 +55,7 @@ public class ClientController : ControllerBase
     [HttpPost("CreateClient")]
     public async Task<IActionResult> CreateClient([FromBody] CreateClientInputModel inputModel)
     {
-        await createClientCommand.Execute(new Application.Commands.Clients.Models.CreateClientInputModel
+        await createClientCommand.Execute(new CreateClientInputModel
         {
             FirstName = inputModel.FirstName,
             LastName = inputModel.LastName,
@@ -61,6 +64,17 @@ public class ClientController : ControllerBase
         return Ok();
     }
 
+    [HttpGet("GetClient/{name}")]
+    public async Task<IActionResult> GetClientByName(string name)
+    {
+        var clients = await getClientByNameQuery.Execute(new GetClientByNameInputModel
+        {
+            Name = name,
+            ConnectionString = connectionString
+        });
+        return Ok(clients);
+    }
+    
     [HttpPost("UpdateClient")]
     public async Task<IActionResult> UpdateClient([FromBody] UpdateClientInputModel inputModel)
     {
