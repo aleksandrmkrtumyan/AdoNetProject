@@ -2,6 +2,6 @@
 
 public class AddClientModel
 {
-    public string FirnstName { get; set; }
+    public string FirstName { get; set; }
     public string LastName { get; set; }
 }
