@@ -1,15 +1,34 @@
+using Application.AuthOption;
 using Application.SqlQueries.Administrators;
-using Application.SqlQueries.Clients;
 using Application.SqlQueries.Database;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Backoffice.Application.Queries.Clients;
 using Backoffice.SqlQueries.Administrators;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(o =>
+{
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = false,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = BackofficeAuthOptions.GetSymmetricSecurityKey()
+    };
+});
+builder.Services.AddAuthorization();
 
+builder.Services.AddControllers();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(b =>
 {
@@ -34,6 +53,9 @@ var ensureFileDbTableCreated = new EnsureFileDbTableCreated(connectionString);
 await ensureFileDbTableCreated.Execute();
 var ensureFileDataTableCreated = new EnsureFileDataTableCreated(connectionString);
 await ensureFileDataTableCreated.Execute();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 app.Run();

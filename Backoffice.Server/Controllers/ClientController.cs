@@ -4,13 +4,14 @@ using Backoffice.Application.Commands.File;
 using Backoffice.Application.Queries.Clients;
 using Backoffice.Application.Queries.Clients.Models;
 using Backoffice.Server.Controllers.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-// using CreateClientInputModel = Backoffice.Application.Commands.Clients.Models.CreateClientInputModel;
 
 namespace Backoffice.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ClientController : ControllerBase
 {
     #region Fields
@@ -52,6 +53,7 @@ public class ClientController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
+        var v = Request; 
         var clients = await getClientsQuery.Execute(new GetClientsInputModel
         {
             ConnectionString = connectionString
