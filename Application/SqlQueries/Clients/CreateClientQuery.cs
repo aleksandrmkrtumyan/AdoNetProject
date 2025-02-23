@@ -5,12 +5,6 @@ namespace Application.SqlQueries.Clients;
 
 public class CreateClientQuery
 {
-    #region Fields
-    #endregion Fields
-    
-    #region Constructor
-    #endregion Constructor
-    
     #region Method
 
     public async Task Execute(CreateClientInputModel inputModel)

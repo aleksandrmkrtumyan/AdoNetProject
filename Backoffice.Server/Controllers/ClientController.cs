@@ -1,5 +1,6 @@
 ﻿using Backoffice.Application.Commands.Clients;
 using Backoffice.Application.Commands.Clients.Models;
+using Backoffice.Application.Commands.File;
 using Backoffice.Application.Queries.Clients;
 using Backoffice.Application.Queries.Clients.Models;
 using Backoffice.Server.Controllers.Models;
@@ -19,6 +20,7 @@ public class ClientController : ControllerBase
     private readonly UpdateClientCommand updateClientCommand;
     private readonly GetClientByNameQuery getClientByNameQuery;
     private readonly DeleteClientCommand deleteClientCommand;
+    private readonly AddFileCommand addFileCommand;
     private readonly string? connectionString;
 
     #endregion Fields
@@ -31,6 +33,7 @@ public class ClientController : ControllerBase
         UpdateClientCommand updateClientCommand,
         GetClientByNameQuery getClientByNameQuery,
         DeleteClientCommand deleteClientCommand,
+        AddFileCommand addFileCommand,
         IConfiguration configuration)
     {
         this.getClientsQuery = getClientsQuery;
@@ -38,6 +41,7 @@ public class ClientController : ControllerBase
         this.updateClientCommand = updateClientCommand;
         this.getClientByNameQuery = getClientByNameQuery;
         this.deleteClientCommand = deleteClientCommand;
+        this.addFileCommand = addFileCommand;
         connectionString = configuration.GetConnectionString("DefaultConnection");
     }
     
@@ -107,5 +111,18 @@ public class ClientController : ControllerBase
         }
     }
 
+    [HttpPost("AddFile")]
+    public async Task<IActionResult> AddFile([FromBody]AddFileInputModel inputModel )
+    {
+        await addFileCommand.Execute(new Application.Commands.File.Models.AddFileInputModel
+        {
+            ClientId = inputModel.ClientId,
+            FileId = inputModel.FileId,
+            FileName = inputModel.FileName,
+            FileData = inputModel.FileData,
+            ConnectionString = connectionString
+        });
+        return Ok();
+    }
     #endregion Methods
 }
