@@ -4,7 +4,7 @@ using Backoffice.Application.Queries.Clients;
 using Backoffice.Application.Queries.Clients.Models;
 using Backoffice.Server.Controllers.Models;
 using Microsoft.AspNetCore.Mvc;
-using CreateClientInputModel = Backoffice.Application.Commands.Clients.Models.CreateClientInputModel;
+// using CreateClientInputModel = Backoffice.Application.Commands.Clients.Models.CreateClientInputModel;
 
 namespace Backoffice.Server.Controllers;
 
@@ -18,6 +18,7 @@ public class ClientController : ControllerBase
     private readonly CreateClientCommand createClientCommand;
     private readonly UpdateClientCommand updateClientCommand;
     private readonly GetClientByNameQuery getClientByNameQuery;
+    private readonly DeleteClientCommand deleteClientCommand;
     private readonly string? connectionString;
 
     #endregion Fields
@@ -29,12 +30,14 @@ public class ClientController : ControllerBase
         CreateClientCommand createClientCommand,
         UpdateClientCommand updateClientCommand,
         GetClientByNameQuery getClientByNameQuery,
+        DeleteClientCommand deleteClientCommand,
         IConfiguration configuration)
     {
         this.getClientsQuery = getClientsQuery;
         this.createClientCommand = createClientCommand;
         this.updateClientCommand = updateClientCommand;
         this.getClientByNameQuery = getClientByNameQuery;
+        this.deleteClientCommand = deleteClientCommand;
         connectionString = configuration.GetConnectionString("DefaultConnection");
     }
     
@@ -53,9 +56,9 @@ public class ClientController : ControllerBase
     }
     
     [HttpPost("CreateClient")]
-    public async Task<IActionResult> CreateClient([FromBody] CreateClientInputModel inputModel)
+    public async Task<IActionResult> CreateClient([FromBody] Models.CreateClientInputModel inputModel)
     {
-        await createClientCommand.Execute(new CreateClientInputModel
+        await createClientCommand.Execute(new Backoffice.Application.Commands.Clients.Models.CreateClientInputModel
         {
             FirstName = inputModel.FirstName,
             LastName = inputModel.LastName,
@@ -87,5 +90,22 @@ public class ClientController : ControllerBase
         });
         return Ok();
     }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        int deletedRowsCount = await deleteClientCommand.Execute(new DeleteClientInputModel
+        {
+            Id = id,
+            ConnectionString = connectionString
+        });
+        if (deletedRowsCount > 0)
+            return Ok("Client deleted successfully");
+        else
+        {
+            return Ok("No rows deleted");
+        }
+    }
+
     #endregion Methods
 }

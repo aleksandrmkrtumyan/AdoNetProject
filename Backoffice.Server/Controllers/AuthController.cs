@@ -22,7 +22,7 @@ public class AuthController : ControllerBase
         )
     {
         this.authenticateAdministratorCommand = authenticateAdministratorCommand;
-        this.connectionString = configuration.GetConnectionString("DefaultConnection");
+        connectionString = configuration.GetConnectionString("DefaultConnection");
     }
     
     [HttpGet]
@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
     {
         return Ok("Hello World!");
     }
-    
+   
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate([FromBody]AuthAdminInputModel authAdminInputModel)
     {
